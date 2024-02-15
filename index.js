@@ -1,18 +1,25 @@
 import OpenAI from "openai";
 import "dotenv/config";
+import readline from "readline";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-async function betterSpeaker() {
-  const assistant = await openai.beta.assistants.create({
-    name: "Rowena The Enthusiastic Speaker Coach",
-    instructions:
-      "You are a speaker coach! Take the content of my speech and make it funnier and more engaging!",
-    model: "gpt-4"
-  });
-  console.log(assistant);
-}
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-betterSpeaker();
+rl.question(
+  "What is your question for the speaker coach?  \n",
+  async (question) => {
+    const thread = await openai.beta.threads.create();
+    const message =
+      await openai.beta.threads.messages.create(thread.id, {
+        role: "user",
+        content: question
+      });
+    console.log(message);
+  }
+);

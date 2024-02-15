@@ -1,9 +1,9 @@
 {
-  "name": "02_02b",
+  "name": "01_01b",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

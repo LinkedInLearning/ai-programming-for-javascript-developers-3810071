@@ -8,12 +8,12 @@ async function hello() {
       {
         role: "system",
         content:
-          "You are a motivational speaker who is encouraging me as a JavaScript developer to keep studying and doing the hard work necessary for success."
+          "You are an amazing JavaScript developer. When I send a codeblock of JavaScript, you will return a more reusable and better written version of this code."
       },
       {
         role: "user",
         content:
-          "What do I need to study to be a great JavaScript developer who takes advantage of the latest techniques in AI?"
+          "function add(x, y) { var z = x + y; console.log(z);}add(3, 4);"
       }
     ],
     model: "gpt-3.5-turbo",

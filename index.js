@@ -12,14 +12,39 @@ const rl = readline.createInterface({
 });
 
 rl.question(
-  "What is your question for the speaker coach?  \n",
+  "Share your opening paragraph with the speaker coach!  \n",
   async (question) => {
-    const thread = await openai.beta.threads.create();
-    const message =
-      await openai.beta.threads.messages.create(thread.id, {
-        role: "user",
-        content: question
-      });
-    console.log(message);
+    const run = await openai.beta.threads.createAndRun({
+      assistant_id: "asst_av5OTlx84zlC44H8emqduX7e",
+      thread: {
+        messages: [
+          {
+            role: "user",
+            content: question
+          }
+        ]
+      }
+    });
+    async function checkStatus() {
+      let status = await openai.beta.threads.runs.retrieve(
+        run.thread_id,
+        run.id
+      );
+      if (status.status === "completed") {
+        let messages =
+          await openai.beta.threads.messages.list(
+            run.thread_id
+          );
+        messages.data.forEach((msg) => {
+          const content = msg.content[0].text.value;
+          console.log(content);
+        });
+      } else {
+        console.log("Run is not completed yet.");
+      }
+    }
+    setTimeout(() => {
+      checkStatus(run.thread_id, run.id);
+    }, 20000);
   }
 );

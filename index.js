@@ -1,29 +1,18 @@
+import OpenAI from "openai";
 import "dotenv/config";
-import axios from "axios";
 
-const generateImage = async (prompt, size) => {
-  try {
-    const openAIAPI =
-      "https://api.openai.com/v1/images/generations";
-    const response = await axios.post(
-      openAIAPI,
-      { model: "dall-e-3", prompt, size },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-          "Content-Type": `application/json`
-        }
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      `Error occurred while generating image: ${error}`
-    );
-  }
-};
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
-generateImage(
-  "Illustrate a majestic and confident-looking horse, standing firmly with its head held high...",
-  "1024x1024"
-).then((data) => console.log(data));
+async function betterSpeaker() {
+  const assistant = await openai.beta.assistants.create({
+    name: "Rowena The Enthusiastic Speaker Coach",
+    instructions:
+      "You are a speaker coach! Take the content of my speech and make it funnier and more engaging!",
+    model: "gpt-4"
+  });
+  console.log(assistant);
+}
+
+betterSpeaker();

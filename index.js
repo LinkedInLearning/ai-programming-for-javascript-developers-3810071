@@ -1,10 +1,20 @@
 import { ChatOpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 import "dotenv/config";
 
+const prompt = ChatPromptTemplate.fromMessages([
+  "human",
+  "Write a haiku about {topic}"
+]);
+
 const chatModel = new ChatOpenAI();
+const parser = new StringOutputParser();
 
-const population = await chatModel.invoke(
-  "What is the population of Bend, Oregon?"
-);
+const chain = prompt.pipe(chatModel).pipe(parser);
 
-console.log(population);
+const response = await chain.invoke({
+  topic: "cats"
+});
+
+console.log(response);

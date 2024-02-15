@@ -2,18 +2,16 @@ import OpenAI from "openai";
 
 const openai = new OpenAI();
 
-async function hello() {
+async function hello(author, text) {
   const stream = await openai.chat.completions.create({
     messages: [
       {
         role: "system",
-        content:
-          "You are an amazing JavaScript developer. When I send a codeblock of JavaScript, you will return a more reusable and better written version of this code."
+        content: "You are a world-renowned author."
       },
       {
         role: "user",
-        content:
-          "function add(x, y) { var z = x + y; console.log(z);}add(3, 4);"
+        content: `Write this in the style of ${author}: ${text}`
       }
     ],
     model: "gpt-3.5-turbo",
@@ -27,4 +25,7 @@ async function hello() {
   }
 }
 
-hello();
+hello(
+  "Joan Didion",
+  "It was the best of times. It was the worst of times."
+);

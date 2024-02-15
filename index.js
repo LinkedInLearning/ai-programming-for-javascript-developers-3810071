@@ -1,30 +1,32 @@
-import OpenAI from "openai";
+import "dotenv/config";
+import axios from "axios";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import FormData from "form-data";
 
-const openai = new OpenAI();
+const __dirname = path.dirname(
+  fileURLToPath(import.meta.url)
+);
+const recordingPath = path.join(
+  __dirname,
+  "eve-recording.mp3"
+);
+const model = "whisper-1";
 
-async function imageDescription() {
-  let response = await openai.chat.completions.create({
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "text",
-            text: "What is this a picture of?"
-          },
-          {
-            type: "image_url",
-            image_url: {
-              url: "https://www.moonhighway.com/articles/incorporating-rest-data/images/skiing.jpeg"
-            }
-          }
-        ]
+const data = new FormData();
+data.append("model", model);
+data.append("file", fs.createReadStream(recordingPath));
+
+axios
+  .post(
+    "https://api.openai.com/v1/audio/transcriptions",
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": `multipart/form-data;boundary=${data.boundary}`
       }
-    ],
-    model: "gpt-4-vision-preview",
-    max_tokens: 100
-  });
-  console.log(response.choices[0].message);
-}
-
-imageDescription();
+    }
+  )
+  .then((response) => console.log(response.data));

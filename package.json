@@ -1,5 +1,5 @@
 {
-  "name": "03_04b",
+  "name": "01_01b",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.2",
+    "form-data": "^4.0.0",
     "openai": "^4.27.0"
   }
 }

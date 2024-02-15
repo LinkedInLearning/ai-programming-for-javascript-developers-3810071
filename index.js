@@ -1,30 +1,30 @@
 import OpenAI from "openai";
-import readline from "readline";
 
 const openai = new OpenAI();
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+async function imageDescription() {
+  let response = await openai.chat.completions.create({
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "What is this a picture of?"
+          },
+          {
+            type: "image_url",
+            image_url: {
+              url: "https://www.moonhighway.com/articles/incorporating-rest-data/images/skiing.jpeg"
+            }
+          }
+        ]
+      }
+    ],
+    model: "gpt-4-vision-preview",
+    max_tokens: 100
+  });
+  console.log(response.choices[0].message);
+}
 
-rl.question(
-  "What do you want to ask the robots",
-  async (question) => {
-    let res = await openai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: "You are a friendly robot!"
-        },
-        {
-          role: "user",
-          content: question
-        }
-      ],
-      model: "gpt-3.5-turbo"
-    });
-    console.log(res.choices[0].message);
-    rl.close();
-  }
-);
+imageDescription();

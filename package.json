@@ -1,5 +1,5 @@
 {
-  "name": "05_01b",
+  "name": "05_01e",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/openai": "^0.0.14",
     "axios": "^1.6.7",
     "dotenv": "^16.4.2",
     "form-data": "^4.0.0",
